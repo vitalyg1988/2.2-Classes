@@ -1,4 +1,4 @@
-from pprint import pprint
+from functools import reduce
 
 print('Добро пожаловать на ферму дядюшки Джо!')
 
@@ -9,6 +9,16 @@ class Animals():
         self.name = name
         self.weight = weight
 
+    def __iadd__(self, other):
+        self.weight += other.weight
+        return self
+
+    def __gt__(self, other):
+        return self.weight > other.weight
+
+    def __lt__(self, other):
+        return self.weight < other.weight
+
     def voice(self, song):
         print(song)
 
@@ -17,6 +27,7 @@ class Animals():
             print('Не нужно кормить')
         else:
             print('Нужно покормить')
+
 
 
 class Horned(Animals):
@@ -101,4 +112,20 @@ duck = Ducks('Кряква', 3)
 hen1 = Hens('Ко-ко', 2)
 hen2 = Hens('Кукареку', 1.5)
 
+
+
+animal_list = [cow, goat1, goat2, sheep1, sheep2, geese1, geese2, duck, hen1, hen2]
+
+
+max_weight = max(animal_list).name
+print(f'Самое тяжелое животное {max_weight}')
+
+# max_weight = reduce(lambda weight1,weight2: weight1 if (weight1 > weight2) else weight2, animal_list)
+# print(f'Самое тяжелое животное {max_weight.name}')
+
+# оставляю прилагаю часть закоммиченного кода:
+# была попытка посчитать сумму кг через reduce, получаю ошибку неподдержки операнда +
+# (пробовал менять в базовом классе магический метод iadd на add, не получается получить сумму)
+sum_weight = reduce(lambda weight1,weight2: weight1+weight2, animal_list)
+print(f'Общий вес всех животных {sum_weight.weight} кг')
 
